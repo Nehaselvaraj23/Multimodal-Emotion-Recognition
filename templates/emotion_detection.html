@@ -1,0 +1,82 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            padding-top: 20px;
+            text-align: center;
+            background-image: url('https://example.com/background.gif');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #emotion-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #ffffff;
+        }
+        .emotion-text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+        }
+        #final-emotion {
+            font-size: 24px;
+            font-weight: bolder;
+            color: #ff5722;
+        }
+        video {
+            width: 100%;
+            max-width: 640px;
+            border: 3px solid #ddd;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Emotion Detection</h2>
+        <div id="emotion-box">
+            <h3>Face Emotion: <span id="face-emotion" class="emotion-text">Unknown</span></h3>
+            <h3>Speech Emotion: <span id="speech-emotion" class="emotion-text">Listening...</span></h3>
+            <h3 id="final-emotion">Final Emotion: Unknown</h3>
+        </div>
+        <video id="webcam" autoplay></video>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.7/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        var eventSource = new EventSource('/emotion_data');
+
+        eventSource.onmessage = function(event) {
+            var data = JSON.parse(event.data);
+            document.getElementById('face-emotion').innerText = data.face_emotion;
+            document.getElementById('speech-emotion').innerText = data.speech_emotion;
+            document.getElementById('final-emotion').innerText = "Final Emotion: " + data.final_emotion;
+        };
+
+        // Access webcam stream
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                document.getElementById('webcam').srcObject = stream;
+            })
+            .catch(function(error) {
+                console.error('Error accessing webcam: ', error);
+            });
+    </script>
+</body>
+</html>

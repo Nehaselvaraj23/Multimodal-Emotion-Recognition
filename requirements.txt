@@ -1,3 +1,9 @@
+<<<<<<< HEAD
 opencv-python
 deepface
 tf_keras
+=======
+opencv-python
+deepface
+tf_keras
+>>>>>>> 2d56b8f (Re-add all files including templates)

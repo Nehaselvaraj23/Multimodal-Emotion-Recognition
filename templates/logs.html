@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-Time Logs</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: url('https://i.pinimg.com/originals/6a/e0/9d/6ae09d56f3894692b0c0c735a9882916.gif') no-repeat center center fixed; /* Replace with your GIF URL */
+            background-size: cover;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        #log-box {
+            width: 150%;
+            height: 400px;
+            overflow-y: scroll;
+            border: 1px solid #fff;
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 15px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #f0f0f0;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Real-Time Logs</h1>
+        <div id="log-box">
+            <pre id="logs"></pre>
+        </div>
+    </div>
+
+    <script>
+        const eventSource = new EventSource('/stream');
+        eventSource.onmessage = function(event) {
+            const logBox = document.getElementById('logs');
+            logBox.textContent += event.data + "\n";
+            logBox.scrollTop = logBox.scrollHeight;
+        };
+    </script>
+</body>
+</html>
